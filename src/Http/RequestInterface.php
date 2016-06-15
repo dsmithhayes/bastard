@@ -3,20 +3,17 @@
 namespace Bastard\Http;
 
 /**
- * @author Dave Smith-Hayes <me@davesmithhayes.com>
+ * @author  Dave Smith-Hayes <me@davesmithhayes.com>
+ * @license BSD 3
  */
 
-/**
- * Defines methods that will be used to grab information from the request to
- * the server.
- */
 interface RequestInterface
 {
     /**
-     * @return array
+     * @return Map<string, string>
      *      The list of all headers sent to the server in the request
      */
-    public function getHeaders(): array;
+    public function getHeaders(): Map<string, string>;
 
     /**
      * @param string $key
@@ -25,4 +22,17 @@ interface RequestInterface
      *      The value of the header
      */
     public function getHeader(string $key): string;
+
+    /**
+     * @return string
+     *      The request method
+     */
+    public function getMethod(): string;
+
+    /**
+     * @param string $method
+     *      Sets the request method, usually takend from
+     *      $_SERVER['REQUEST_METHOD']
+     */
+    public function setMethod(string $method): void;
 }
