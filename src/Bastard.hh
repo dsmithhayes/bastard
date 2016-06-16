@@ -4,6 +4,7 @@ namespace Bastard;
 
 use Bastard\Http\RequestInterface;
 use Bastard\Http\ResponseInterface;
+use Bastard\Http\Dispatcher;
 
 newtype ResponseCallback = (function(RequestInterface, ResponseInterface): ResponseInterface);
 
@@ -23,6 +24,8 @@ class Bastard
 
     private static ?RequestInterface $request;
     private static ?ResponseInterface $response;
+
+    private ?Dispatcher $dispatcher;
 
     public function get(string $route, ResponseCallback $callback): void
     {
