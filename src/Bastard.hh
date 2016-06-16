@@ -27,46 +27,70 @@ class Bastard
 
     private ?Dispatcher $dispatcher;
 
-    public function get(string $route, ResponseCallback $callback): void
+    public function get(string $route, ResponseCallback $callback): this
     {
-        self::$getRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$getRoutes) {
+            self::$getRoutes = Map{$route => $callback};
+        } else {
+            self::$getRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
-    public function post(string $route, ResponseCallback $callback): void
+    public function post(string $route, ResponseCallback $callback): this
     {
-        self::$postRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$postRoutes) {
+            self::$postRoutes = Map{ $route => $callback };
+        } else {
+            self::$postRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
-    public function put(string $route, ResponseCallback $callback): void
+    public function put(string $route, ResponseCallback $callback): this
     {
-        self::$putRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$putRoutes) {
+            self::$putRoutes = Map{ $route => $callback };
+        } else {
+            self::$putRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
-    public function patch(string $route, ResponseCallback $callback): void
+    public function patch(string $route, ResponseCallback $callback): this
     {
-        self::$patchRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$patchRoutes) {
+            self::$patchRoutes = Map{ $route => $callback };
+        } else {
+            self::$patchRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
-    public function delete(string $route, ResponseCallback $callback): void
+    public function delete(string $route, ResponseCallback $callback): this
     {
-        self::$deleteRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$deleteRoutes) {
+            self::$deleteRoutes = Map{ $route => $callback };
+        } else {
+            self::$deleteRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
-    public function options(string $route, ResponseCallback $callback): void
+    public function options(string $route, ResponseCallback $callback): this
     {
-        self::$optionsRoutes = Map{
-            $route => $callback
-        };
+        if (!self::$optionsRoutes) {
+            self::$optionsRoutes = Map{ $route => $callback };
+        } else {
+            self::$optionsRoutes->set($route, $callback);
+        }
+
+        return $this;
     }
 
     public function run(RequestInterface $request, ResponseInterface $response): void
