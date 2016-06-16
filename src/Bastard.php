@@ -1,58 +1,77 @@
-<?hh
+<?hh // strict
 
 namespace Bastard;
 
 use Bastard\Http\RequestInterface;
 use Bastard\Http\ResponseInterface;
 
+newtype ResponseCallback = (function(RequestInterface, ResponseInterface): ResponseInterface);
+
 /**
  * @author  Dave Smith-Hayes <me@davesmithhayes.com>
  * @license BSD 3
  */
 
-newtype ResponseCallback = (function(RequestInterface, ResponseInterface): ResponseInterface);
-
 class Bastard
 {
-    private static Map<string, ResponseCallback> $getRoutes;
+    private static ?Map<string, ResponseCallback> $getRoutes;
+    private static ?Map<string, ResponseCallback> $postRoutes;
+    private static ?Map<string, ResponseCallback> $putRoutes;
+    private static ?Map<string, ResponseCallback> $patchRoutes;
+    private static ?Map<string, ResponseCallback> $deleteRoutes;
+    private static ?Map<string, ResponseCallback> $optionsRoutes;
 
-    private static Map<string, ResponseCallback> $postRoutes;
-
-    private static Map<string, ResponseCallback> $putRoutes;
-
-    private static Map<string, ResponseCallback> $patchRoutes;
-
-    private static Map<string, ResponseCallback> $deleteRoutes;
-
-    private static Map<string, ResponseCallback> $optionsRoutes;
+    private static ?RequestInterface $request;
+    private static ?ResponseInterface $response;
 
     public function get(string $route, ResponseCallback $callback): void
     {
-        $this->getRoutes[$route] = $callback;
+        self::$getRoutes = Map{
+            $route => $callback
+        };
     }
 
     public function post(string $route, ResponseCallback $callback): void
     {
-        $this->postRoutes[$route] = $callback;
+        self::$postRoutes = Map{
+            $route => $callback
+        };
     }
 
-    public function put(string $route, ResponseCallBack $callback): void
+    public function put(string $route, ResponseCallback $callback): void
     {
-        $this->putRoutes[$route] = $callback;
+        self::$putRoutes = Map{
+            $route => $callback
+        };
     }
 
     public function patch(string $route, ResponseCallback $callback): void
     {
-        $this->patchRoutes[$route] = $callback;
+        self::$patchRoutes = Map{
+            $route => $callback
+        };
     }
 
     public function delete(string $route, ResponseCallback $callback): void
     {
-        $this->deleteRoutes[$route] = $callback;
+        self::$deleteRoutes = Map{
+            $route => $callback
+        };
     }
 
     public function options(string $route, ResponseCallback $callback): void
     {
-        $this->optionsRoutes[$route] = $callback;
+        self::$optionsRoutes = Map{
+            $route => $callback
+        };
+    }
+
+    public function run(RequestInterface $request, ResponseInterface $response): void
+    {
+        if (!is_null(self::$getRoutes)) {
+            foreach (self::$getRoutes as $route => $callback) {
+                $callback($request, $response);
+            }
+        }
     }
 }
