@@ -24,6 +24,12 @@ interface RequestInterface
     public function getHeader(string $key): string;
 
     /**
+     * @param Map<string, string> $header
+     *
+     */
+    public function setHeader(Map<string, string> $header): this;
+
+    /**
      * @return string
      *      The request method
      */
@@ -31,8 +37,7 @@ interface RequestInterface
 
     /**
      * @param string $method
-     *      Sets the request method, usually takend from
-     *      $_SERVER['REQUEST_METHOD']
+     *      Sets the request method
      */
-    public function setMethod(string $method): void;
+    public function setMethod(string $method): this;
 }

@@ -3,8 +3,8 @@
 namespace Bastard\Http\Basic;
 
 /**
- * @author  Dave Smith-Hayes
- * @license BSD 3
+ * @author  Dave Smith-Hayes <me@davesmithhayes.com>
+ * @license BSD 3.0
  */
 
 use Bastard\Http\ResponseInterface;
@@ -12,7 +12,7 @@ use Bastard\Http\ResponseInterface;
 class Response implements ResponseInterface
 {
     private ?Map<string, string> $headers;
-    private int $code = 200;
+    private int    $code = 200;
     private string $body = '';
 
     public function __construct()
@@ -25,9 +25,10 @@ class Response implements ResponseInterface
         return $this->code;
     }
 
-    public function setCode(int $code): void
+    public function setCode(int $code): this
     {
         $this->code = $code;
+        return $this;
     }
 
     public function getBody(): string
@@ -35,8 +36,9 @@ class Response implements ResponseInterface
         return $this->body;
     }
 
-    public function setBody(string $body): void
+    public function setBody(string $body): this
     {
         $this->body = $body;
+        return $this;
     }
 }
