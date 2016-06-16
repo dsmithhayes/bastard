@@ -15,11 +15,6 @@ class Response implements ResponseInterface
     private int    $code = 200;
     private string $body = '';
 
-    public function __construct()
-    {
-
-    }
-
     public function getCode(): int
     {
         return $this->code;

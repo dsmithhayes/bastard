@@ -15,6 +15,9 @@ newtype ResponseCallback = (function(RequestInterface, ResponseInterface): Respo
 
 class Bastard
 {
+    // maybe this will be better?
+    private static ?Map<string, Map<string, ResponseCallback>> $routes;
+
     private static ?Map<string, ResponseCallback> $getRoutes;
     private static ?Map<string, ResponseCallback> $postRoutes;
     private static ?Map<string, ResponseCallback> $putRoutes;
