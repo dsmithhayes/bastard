@@ -13,4 +13,4 @@ $bastard->get('/', function (Request $req, Response $res) {
     return $res;
 });
 
-$bastard->run(new Request(), new Response());
+$bastard->run();

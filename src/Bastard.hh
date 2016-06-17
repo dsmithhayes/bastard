@@ -2,11 +2,11 @@
 
 namespace Bastard;
 
-use Bastard\Http\RequestInterface;
-use Bastard\Http\ResponseInterface;
+use Bastard\Http\RequestInterface  as Request;
+use Bastard\Http\ResponseInterface as Response;
 use Bastard\Http\Dispatcher;
 
-newtype ResponseCallback = (function(RequestInterface, ResponseInterface): ResponseInterface);
+newtype ResponseCallback = (function(Request, Response): Response);
 
 /**
  * @author  Dave Smith-Hayes <me@davesmithhayes.com>
@@ -15,93 +15,76 @@ newtype ResponseCallback = (function(RequestInterface, ResponseInterface): Respo
 
 class Bastard
 {
-    // maybe this will be better?
-    private static ?Map<string, Map<string, ResponseCallback>> $routes;
+    /**
+     * Map of all the routes and callbacks defined for the application.
+     */
+    private static Map<string, ?Map<string, ResponseCallback>> $routes = Map{
+        'get'     => null,
+        'post'    => null,
+        'put'     => null,
+        'patch'   => null,
+        'delete'  => null,
+        'options' => null
+    };
 
-    private static ?Map<string, ResponseCallback> $getRoutes;
-    private static ?Map<string, ResponseCallback> $postRoutes;
-    private static ?Map<string, ResponseCallback> $putRoutes;
-    private static ?Map<string, ResponseCallback> $patchRoutes;
-    private static ?Map<string, ResponseCallback> $deleteRoutes;
-    private static ?Map<string, ResponseCallback> $optionsRoutes;
+    private ImmSet<string> $methods = ImmSet{
+        'get',   'post',   'put',
+        'patch', 'delete', 'options'
+    };
 
-    private static ?RequestInterface $request;
-    private static ?ResponseInterface $response;
+    private Request  $request;
+    private Response $response;
 
-    private ?Dispatcher $dispatcher;
+    public function __construct(Request $request, Response $response)
+    {
+        $this->request  = $request;
+        $this->response = $response;
+    }
 
     public function get(string $route, ResponseCallback $callback): this
     {
-        if (!self::$getRoutes) {
-            self::$getRoutes = Map{$route => $callback};
-        } else {
-            self::$getRoutes->set($route, $callback);
-        }
-
+        self::$routes['get'] = Map{ $route => $callback };
         return $this;
     }
 
     public function post(string $route, ResponseCallback $callback): this
     {
-        if (!self::$postRoutes) {
-            self::$postRoutes = Map{ $route => $callback };
-        } else {
-            self::$postRoutes->set($route, $callback);
-        }
-
+        self::$routes['post'] = Map{ $route => $callback };
         return $this;
     }
 
-    public function put(string $route, ResponseCallback $callback): this
+    public function set(string $route, Set<string> $methods, ResponseCallback $callback): this
     {
-        if (!self::$putRoutes) {
-            self::$putRoutes = Map{ $route => $callback };
-        } else {
-            self::$putRoutes->set($route, $callback);
-        }
-
-        return $this;
-    }
-
-    public function patch(string $route, ResponseCallback $callback): this
-    {
-        if (!self::$patchRoutes) {
-            self::$patchRoutes = Map{ $route => $callback };
-        } else {
-            self::$patchRoutes->set($route, $callback);
-        }
-
-        return $this;
-    }
-
-    public function delete(string $route, ResponseCallback $callback): this
-    {
-        if (!self::$deleteRoutes) {
-            self::$deleteRoutes = Map{ $route => $callback };
-        } else {
-            self::$deleteRoutes->set($route, $callback);
-        }
-
-        return $this;
-    }
-
-    public function options(string $route, ResponseCallback $callback): this
-    {
-        if (!self::$optionsRoutes) {
-            self::$optionsRoutes = Map{ $route => $callback };
-        } else {
-            self::$optionsRoutes->set($route, $callback);
-        }
-
-        return $this;
-    }
-
-    public function run(RequestInterface $request, ResponseInterface $response): void
-    {
-        if (!is_null(self::$getRoutes)) {
-            foreach (self::$getRoutes as $route => $callback) {
-                $callback($request, $response);
+        foreach ($methods as $method) {
+            if ($this->validMethod(($method))) {
+                self::$routes[$method] = Map{$route => $callback};
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * The main entry point of any Bastard application. This should be called
+     * at the end of the index.php file that acts at the front controller.
+     */
+    public function run(): void
+    {
+        // check request for the method
+
+        // match the route
+
+        // run the callback
+    }
+
+    private function validMethod(string $method): bool
+    {
+        foreach ($this->methods as $m) {
+            if ($method === $m) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
