@@ -27,13 +27,29 @@ class Bastard
         'options' => null
     };
 
-    private ImmSet<string> $methods = ImmSet{
-        'get',   'post',   'put',
-        'patch', 'delete', 'options'
+    private ImmMap<string, string> $methods = ImmMap{
+        'GET'     => 'get',
+        'POST'    => 'post',
+        'PUT'     => 'put',
+        'PATCH'   => 'patch',
+        'DELETE'  => 'delete',
+        'OPTIONS' => 'options'
     };
 
+    /**
+     * Implements Bastard\Http\RequestInterface
+     */
     private Request  $request;
+
+    /**
+     * Implements Bastard\Http\ResponseInterface
+     */
     private Response $response;
+
+    /**
+     * Instance of the Bastard\Dispatcher
+     */
+    private ?Dispatcher $dispatcher;
 
     public function __construct(Request $request, Response $response)
     {
@@ -53,7 +69,27 @@ class Bastard
         return $this;
     }
 
-    public function set(string $route, Set<string> $methods, ResponseCallback $callback): this
+    public function put(string $route, ResponseCallback $callback): this
+    {
+        self::$routes['put'] = Map{ $route => $callback };
+        return $this;
+    }
+
+    public function patch(string $route, ResponseCallback $callback): this
+    {
+        self::$routes['patch'] = Map{ $route => $callback };
+        return $this;
+    }
+
+    public function delete(string $route, ResponseCallback $callback): this
+    {
+        self::$routes['delete'] = Map{ $route => $callback };
+        return $this;
+    }
+
+    public function set(string           $route,
+                        Set<string>      $methods,
+                        ResponseCallback $callback): this
     {
         foreach ($methods as $method) {
             if ($this->validMethod(($method))) {
@@ -70,6 +106,8 @@ class Bastard
      */
     public function run(): void
     {
+        // THROW ALL THE ERRORS NOW.
+        
         // check request for the method
 
         // match the route
