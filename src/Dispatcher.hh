@@ -13,8 +13,13 @@ namespace Bastard\Http;
  */
 class Dispatcher
 {
+    public function __construct()
+    {
+
+    }
+
     public function respond(): void
     {
-        
+
     }
 }

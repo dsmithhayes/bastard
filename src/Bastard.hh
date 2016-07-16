@@ -5,7 +5,6 @@ namespace Bastard;
 use Bastard\Http\Basic\Request;
 use Bastard\Http\Basic\Response;
 use Bastard\Http\Dispatcher;
-use Bastard\Routes;
 
 /**
  * Defines the callback method that takes in a Request and a Response object
@@ -51,12 +50,13 @@ class Bastard
     /**
      * Instance of the Bastard\Dispatcher
      */
-    private ?Dispatcher $dispatcher;
+    private Dispatcher $dispatcher;
 
-    public function __construct()
+    public function __construct(Request $request, Response $response)
     {
-        $this->request  = new Request();
-        $this->response = new Response();
+        $this->request    = $request;
+        $this->response   = $response;
+        $this->dispatcher = new Dispatcher();
     }
 
     public function get(string $route, ResponseCallback $callback): this
