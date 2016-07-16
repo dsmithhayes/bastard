@@ -9,10 +9,25 @@ namespace Bastard\Http\Basic;
 
 use Bastard\Http\ResponseInterface;
 
+/**
+ * This is a basic implementation of the \Bastard\Http\ResponseInterface which
+ * is used by default in the framework.
+ */
 class Response implements ResponseInterface
 {
+    /**
+     * Map of all the HTTP headers to send back to the client.
+     */
     private ?Map<string, string> $headers;
-    private int    $code = 200;
+
+    /**
+     * The response code, by default this will always be 200.
+     */
+    private int $code = 200;
+
+    /**
+     * The response body, by default this is an empty string.
+     */
     private string $body = '';
 
     public function getCode(): int

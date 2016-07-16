@@ -12,13 +12,18 @@ use Bastard\Http\RequestInterface;
 class Request implements RequestInterface
 {
     private Map<string, string> $headers;
-    private string $method = 'GET';
+    private string $method;
 
+    /**
+     * Rips information out of the $_SERVER super global
+     */
     public function __construct()
     {
         $this->headers = Map{
 
         };
+
+        $this->method = 'GET';
     }
 
     public function getHeaders(): Map<string, string>

@@ -2,11 +2,22 @@
 
 namespace Bastard;
 
-use Bastard\Http\RequestInterface  as Request;
-use Bastard\Http\ResponseInterface as Response;
+use Bastard\Http\Basic\Request;
+use Bastard\Http\Basic\Response;
 use Bastard\Http\Dispatcher;
+use Bastard\Routes;
 
+/**
+ * Defines the callback method that takes in a Request and a Response object
+ * that then returns the Response object.
+ */
 newtype ResponseCallback = (function(Request, Response): Response);
+
+/**
+ * Defines the Route map which will be a URI string and optionally a
+ * ResponseCallback type.
+ */
+newtype Route = Map<string, ?ResponseCallback>;
 
 /**
  * @author  Dave Smith-Hayes <me@davesmithhayes.com>
@@ -18,28 +29,19 @@ class Bastard
     /**
      * Map of all the routes and callbacks defined for the application.
      */
-    private static Map<string, ?Map<string, ResponseCallback>> $routes = Map{
-        'get'     => null,
-        'post'    => null,
-        'put'     => null,
-        'patch'   => null,
-        'delete'  => null,
-        'options' => null
-    };
-
-    private ImmMap<string, string> $methods = ImmMap{
-        'GET'     => 'get',
-        'POST'    => 'post',
-        'PUT'     => 'put',
-        'PATCH'   => 'patch',
-        'DELETE'  => 'delete',
-        'OPTIONS' => 'options'
+    private Map<string, Route> $routes = Map{
+        'GET'    => Map{ '/' => null },
+        'POST'   => Map{ '/' => null },
+        'PUT'    => Map{ '/' => null },
+        'PATCH'  => Map{ '/' => null },
+        'DELETE' => Map{ '/' => null },
+        'OPTION' => Map{ '/' => null }
     };
 
     /**
      * Implements Bastard\Http\RequestInterface
      */
-    private Request  $request;
+     private Request $request;
 
     /**
      * Implements Bastard\Http\ResponseInterface
@@ -51,49 +53,58 @@ class Bastard
      */
     private ?Dispatcher $dispatcher;
 
-    public function __construct(Request $request, Response $response)
+    public function __construct()
     {
-        $this->request  = $request;
-        $this->response = $response;
+        $this->request  = new Request();
+        $this->response = new Response();
     }
 
     public function get(string $route, ResponseCallback $callback): this
     {
-        self::$routes['get'] = Map{ $route => $callback };
+        $this->routes->set('GET', Map{ $route => $callback });
         return $this;
     }
 
     public function post(string $route, ResponseCallback $callback): this
     {
-        self::$routes['post'] = Map{ $route => $callback };
+        $this->routes->set('POST', Map{ $route => $callback });
         return $this;
     }
 
     public function put(string $route, ResponseCallback $callback): this
     {
-        self::$routes['put'] = Map{ $route => $callback };
+        $this->routes->set('PUT', Map{ $route => $callback });
         return $this;
     }
 
     public function patch(string $route, ResponseCallback $callback): this
     {
-        self::$routes['patch'] = Map{ $route => $callback };
+        $this->routes->set('PATCH', Map{ $route => $callback });
         return $this;
     }
 
     public function delete(string $route, ResponseCallback $callback): this
     {
-        self::$routes['delete'] = Map{ $route => $callback };
+        $this->routes->set('DELETE', Map{ $route => $callback });
         return $this;
     }
 
+    public function options(string $route, ResponseCallback $callback): this
+    {
+        $this->routes->set('OPTIONS', Map{ $route => $callback });
+        return $this;
+    }
+
+    /**
+     * Sets a common route and callback to multiple HTTP methods.
+     */
     public function set(string           $route,
                         Set<string>      $methods,
                         ResponseCallback $callback): this
     {
         foreach ($methods as $method) {
             if ($this->validMethod(($method))) {
-                self::$routes[$method] = Map{$route => $callback};
+                $this->routes->set($method, Map{$route => $callback});
             }
         }
 
@@ -106,8 +117,6 @@ class Bastard
      */
     public function run(): void
     {
-        // THROW ALL THE ERRORS NOW.
-        
         // check request for the method
 
         // match the route
@@ -115,14 +124,12 @@ class Bastard
         // run the callback
     }
 
+    /**
+     * Assures that the method trying to be accessed from the develop is a
+     * valid HTTP method supported by Bastard
+     */
     private function validMethod(string $method): bool
     {
-        foreach ($this->methods as $m) {
-            if ($method === $m) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->routes->containsKey($method);
     }
 }

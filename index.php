@@ -9,9 +9,13 @@ use \Bastard\Http\Basic\Response;
 // implement your own Request and Response, or use the Basic Bastard HTTP
 $bastard = new Bastard(new Request(), new Response());
 
-$bastard->get('/', function (Request $req, Response $res): Response {
-    echo "You made it!";
-    return $res;
-});
+$bastard
+    ->get('/', function (Request $req, Response $res): Response {
+        echo "You made it!";
+        return $res;
+    })->post('/', function (Request $req, Resoinse $res): Response {
+        echo "Posted!";
+        return $res;
+    });
 
 $bastard->run();
