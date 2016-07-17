@@ -11,7 +11,24 @@ use Bastard\Http\RequestInterface;
 
 class Request implements RequestInterface
 {
+    /**
+     * The following constants define the HTTP Request methods
+     */
+    const METHOD_GET     = 'GET';
+    const METHOD_POST    = 'POST';
+    const METHOD_PUT     = 'PUT';
+    const METHOD_PATCH   = 'PATCH';
+    const METHOD_DELETE  = 'DELETE';
+    const METHOD_OPTIONS = 'OPTIONS';
+
+    /**
+     * Built out from the `$_SERVER` superglobal
+     */
     private Map<string, string> $headers;
+
+    /**
+     * The method requested to the server with.
+     */
     private string $method;
 
     /**

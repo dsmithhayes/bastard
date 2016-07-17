@@ -29,12 +29,12 @@ class Bastard
      * Map of all the routes and callbacks defined for the application.
      */
     private Map<string, Route> $routes = Map{
-        'GET'    => Map{ '/' => null },
-        'POST'   => Map{ '/' => null },
-        'PUT'    => Map{ '/' => null },
-        'PATCH'  => Map{ '/' => null },
-        'DELETE' => Map{ '/' => null },
-        'OPTION' => Map{ '/' => null }
+        Request::METHOD_GET     => Map{ '/' => null },
+        Request::METHOD_POST    => Map{ '/' => null },
+        Request::METHOD_PUT     => Map{ '/' => null },
+        Request::METHOD_PATCH   => Map{ '/' => null },
+        Request::METHOD_DELETE  => Map{ '/' => null },
+        Request::METHOD_OPTIONS => Map{ '/' => null }
     };
 
     /**
@@ -59,52 +59,76 @@ class Bastard
         $this->dispatcher = new Dispatcher();
     }
 
+    /**
+     * Adds a route and a method to a specific GET request.
+     */
     public function get(string $route, ResponseCallback $callback): this
     {
-        $this->routes->at('GET')->add(Pair{ $route, $callback });
+        $this->routes->at(Request::METHOD_GET)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
+    /**
+     * Adds a route and a method to a specific POST request.
+     */
     public function post(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('POST', Map{ $route => $callback });
+        $this->routes->at(Request::METHOD_POST)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
+    /**
+     * Adds a route and a method to a specific PUT request.
+     */
     public function put(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('PUT', Map{ $route => $callback });
+        $this->routes->at(Request::METHOD_PUT)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
+    /**
+     * Adds a route and a method to a specific PATCH request.
+     */
     public function patch(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('PATCH', Map{ $route => $callback });
+        $this->routes->at(Request::METHOD_PATCH)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
+    /**
+     * Adds a route and method to a specific DELETE request.
+     */
     public function delete(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('DELETE', Map{ $route => $callback });
+        $this->routes->at(Request::METHOD_DELETE)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
+    /**
+     * Adds a route and a method to a specific OPTIONS request.
+     */
     public function options(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('OPTIONS', Map{ $route => $callback });
+        $this->routes->at(Request::METHOD_OPTIONS)
+                     ->add(Pair{ $route, $callback });
         return $this;
     }
 
     /**
      * Sets a common route and callback to multiple HTTP methods.
      */
-    public function set(string           $route,
-                        Set<string>      $methods,
+    public function set(string $route,
+                        Set<string> $methods,
                         ResponseCallback $callback): this
     {
         foreach ($methods as $method) {
-            if ($this->validMethod(($method))) {
-                $this->routes->set($method, Map{$route => $callback});
+            if ($this->routes->containsKey($method)) {
+                $this->routes->at($method)->add(Pair{ $route, $callback });
             }
         }
 
@@ -123,21 +147,21 @@ class Bastard
         // match the route
 
         // run the callback
+        $callback = $this->routes->at($this->request->getMethod())
+                                 ->get($this->request->getHeader('REQUEST_URI'));
+
+        if (!is_null($callback)) {
+            $this->response = $callback($this->request, $this->response);
+        }
+
+        /*
         foreach ($this->routes as $method => $route) {
             foreach ($route as $r => $c) {
                 if (!is_null($c)) {
-                    $c($this->request, $this->response);
+                    $this->response = $c($this->request, $this->response);
                 }
             }
         }
-    }
-
-    /**
-     * Assures that the method trying to be accessed from the develop is a
-     * valid HTTP method supported by Bastard
-     */
-    private function validMethod(string $method): bool
-    {
-        return $this->routes->containsKey($method);
+        */
     }
 }

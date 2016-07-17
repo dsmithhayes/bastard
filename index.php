@@ -13,6 +13,10 @@ $bastard
     ->get('/', function (Request $req, Response $res): Response {
         echo "You made it!";
         return $res;
+    })
+    ->get('/hello', function (Request $req, Response $res): Response {
+        echo "Welcome home!";
+        return $res;
     });
 
 $bastard->run();
