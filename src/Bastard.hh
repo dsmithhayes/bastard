@@ -4,7 +4,7 @@ namespace Bastard;
 
 use Bastard\Http\Basic\Request;
 use Bastard\Http\Basic\Response;
-use Bastard\Http\Dispatcher;
+use Bastard\Dispatcher;
 
 /**
  * Defines the callback method that takes in a Request and a Response object
@@ -52,16 +52,16 @@ class Bastard
      */
     private Dispatcher $dispatcher;
 
-    public function __construct(Request $request, Response $response)
+    public function __construct()
     {
-        $this->request    = $request;
-        $this->response   = $response;
+        $this->request    = new Request();
+        $this->response   = new Response();
         $this->dispatcher = new Dispatcher();
     }
 
     public function get(string $route, ResponseCallback $callback): this
     {
-        $this->routes->set('GET', Map{ $route => $callback });
+        $this->routes->at('GET')->add(Pair{ $route, $callback });
         return $this;
     }
 
@@ -113,7 +113,8 @@ class Bastard
 
     /**
      * The main entry point of any Bastard application. This should be called
-     * at the end of the index.php file that acts at the front controller.
+     * at the end of the index.php file that acts at the front controller. This
+     * method will make ample usage of the Dispatcher object.
      */
     public function run(): void
     {
@@ -122,6 +123,13 @@ class Bastard
         // match the route
 
         // run the callback
+        foreach ($this->routes as $method => $route) {
+            foreach ($route as $r => $c) {
+                if (!is_null($c)) {
+                    $c($this->request, $this->response);
+                }
+            }
+        }
     }
 
     /**

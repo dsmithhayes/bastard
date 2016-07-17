@@ -19,11 +19,8 @@ class Request implements RequestInterface
      */
     public function __construct()
     {
-        $this->headers = Map{
-
-        };
-
-        $this->method = 'GET';
+        $this->headers = new Map($_SERVER);
+        $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
     public function getHeaders(): Map<string, string>

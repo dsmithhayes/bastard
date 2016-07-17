@@ -1,6 +1,6 @@
 <?hh // strict
 
-namespace Bastard\Http;
+namespace Bastard;
 
 /**
  * @author  Dave Smith-Hayes <me@davesmithhayes>
