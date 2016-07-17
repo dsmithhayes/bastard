@@ -19,4 +19,11 @@ $bastard
         return $res;
     });
 
+foreach ($bastard->getAllRoutes() as $method => $route) {
+    echo $method . "\n";
+    echo "-------------\n";
+    print_r($route);
+    echo "\n\n";
+}
+
 $bastard->run();

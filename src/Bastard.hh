@@ -152,6 +152,8 @@ class Bastard
 
         if (!is_null($callback)) {
             $this->response = $callback($this->request, $this->response);
+        } else {
+            echo "500 Error\n";
         }
 
         /*
@@ -163,5 +165,15 @@ class Bastard
             }
         }
         */
+    }
+
+    public function getAllRoutes(): Map<string, Route>
+    {
+        return $this->routes;
+    }
+
+    public function getRoute(string $method): Map<string, ?ResponseCallback>
+    {
+        return $this->routes->at($method);
     }
 }

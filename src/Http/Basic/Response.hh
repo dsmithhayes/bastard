@@ -51,4 +51,18 @@ class Response implements ResponseInterface
         $this->body = $body;
         return $this;
     }
+
+    /**
+     * Sets a specific header to return to the client
+     */
+    public function setHeader(Map<string, string> $header): this
+    {
+
+        return $this;
+    }
+
+    public function respond(): void
+    {
+
+    }
 }
