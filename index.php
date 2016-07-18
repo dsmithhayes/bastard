@@ -11,19 +11,13 @@ $bastard = new Bastard();
 
 $bastard
     ->get('/', function (Request $req, Response $res): Response {
+        $res->setHeader('X-something', 'something else');
         echo "You made it!";
         return $res;
     })
-    ->get('/hello', function (Request $req, Response $res): Response {
+    ->get('/home', function (Request $req, Response $res): Response {
         echo "Welcome home!";
         return $res;
     });
-
-foreach ($bastard->getAllRoutes() as $method => $route) {
-    echo $method . "\n";
-    echo "-------------\n";
-    print_r($route);
-    echo "\n\n";
-}
 
 $bastard->run();

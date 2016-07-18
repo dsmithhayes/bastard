@@ -140,7 +140,7 @@ class Bastard
      * at the end of the index.php file that acts at the front controller. This
      * method will make ample usage of the Dispatcher object.
      */
-    public function run(): void
+    public function run(): string
     {
         // check request for the method
 
@@ -156,6 +156,7 @@ class Bastard
             echo "500 Error\n";
         }
 
+        return $this->response->respond();
         /*
         foreach ($this->routes as $method => $route) {
             foreach ($route as $r => $c) {
@@ -175,5 +176,15 @@ class Bastard
     public function getRoute(string $method): Map<string, ?ResponseCallback>
     {
         return $this->routes->at($method);
+    }
+
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    public function getResponse(): Response
+    {
+        return $this->response;
     }
 }

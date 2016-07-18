@@ -18,7 +18,7 @@ class Response implements ResponseInterface
     /**
      * Map of all the HTTP headers to send back to the client.
      */
-    private ?Map<string, string> $headers;
+    private Map<string, string> $headers;
 
     /**
      * The response code, by default this will always be 200.
@@ -29,6 +29,22 @@ class Response implements ResponseInterface
      * The response body, by default this is an empty string.
      */
     private string $body = '';
+
+    /**
+     * Constructing the Response object will place all of the headers that are
+     * ready to be sent at the time of construction of this object.
+     */
+    public function __construct()
+    {
+        $headers = [];
+
+        foreach (headers_list() as $header) {
+            $header = explode(": ", $header);
+            $headers[$header[0]] = $header[1];
+        }
+
+        $this->headers = new Map($headers);
+    }
 
     public function getCode(): int
     {
@@ -55,14 +71,23 @@ class Response implements ResponseInterface
     /**
      * Sets a specific header to return to the client
      */
-    public function setHeader(Map<string, string> $header): this
+    public function setHeader(string $header, string $value): this
     {
 
         return $this;
     }
 
-    public function respond(): void
+    public function getHeaders(): Map<string, string>
     {
+        return $this->headers;
+    }
 
+    public function respond(): string
+    {
+        foreach ($this->headers as $header => $value) {
+            header($header . ": " . $value);
+        }
+
+        return $this->getBody();
     }
 }
