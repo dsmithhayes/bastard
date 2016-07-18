@@ -12,7 +12,7 @@ $bastard = new Bastard();
 $bastard
     ->get('/', function (Request $req, Response $res): Response {
         $res->setHeader('X-something', 'something else');
-        echo "You made it!";
+        $res->setBody('You made it!');
         return $res;
     })
     ->get('/home', function (Request $req, Response $res): Response {

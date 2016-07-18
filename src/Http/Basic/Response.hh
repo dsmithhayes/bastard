@@ -82,12 +82,12 @@ class Response implements ResponseInterface
         return $this->headers;
     }
 
-    public function respond(): string
+    public function respond(): void
     {
         foreach ($this->headers as $header => $value) {
             header($header . ": " . $value);
         }
 
-        return $this->getBody();
+        echo $this->getBody();
     }
 }
