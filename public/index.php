@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Application\Settings\SettingsInterface;
+use Bastard\Framework\Settings\SettingsInterface;
 use Bastard\Framework\Handlers\HttpErrorHandler;
 use Bastard\Framework\Handlers\ShutdownHandler;
 use Bastard\Framework\ResponseEmitter\ResponseEmitter;
@@ -16,7 +16,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $containerBuilder = new ContainerBuilder();
 
 if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
 
 // Set up settings
@@ -74,7 +74,7 @@ $app->addBodyParsingMiddleware();
 
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+// $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 // Run App & Emit Response
 $response = $app->handle($request);
