@@ -31,7 +31,8 @@ class ViewExtension implements ExtensionInterface
     public function register(Engine $engine)
     {
         $this->engine = $engine;
-        $engine->registerFunction('url_for', [ $this, 'urlFor' ]);
+        $this->engine->registerFunction('url_for', [ $this, 'urlFor' ]);
+        $this->engine->registerFunction('full_url_for', [ $this, 'fullUrlFor' ]);
     }
 
     public function urlFor(string $name, array $data = [], array $queryParams = []): string
