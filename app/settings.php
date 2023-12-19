@@ -23,7 +23,12 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 // The View Layer Settings
                 'view' => [
-                    'default_path' => __DIR__ . '/../templates/main'
+                    'template_paths' => [
+                        'default' => __DIR__ . '/../templates/main',
+                    ],
+                    'asset_paths' => [
+                        'default' => __DIR__ . '/../assets'
+                    ],
                 ]
             ]);
         }

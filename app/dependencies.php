@@ -29,6 +29,11 @@ return function (ContainerBuilder $containerBuilder) {
         },
         Engine::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class)->get('view');
+            $engine = new Engine($settings['template_paths']['default']);
+
+            // Add more template paths here
+
+            return $engine;
         }
     ]);
 };
