@@ -1,6 +1,6 @@
 <?php
 
-namespace Bastard\Application\Controller;
+namespace Bastard\Application\Controllers;
 
 use Bastard\Framework\Controller;
 use Psr\Http\Message\ResponseInterface as Response;

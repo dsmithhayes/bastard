@@ -3,6 +3,8 @@
 namespace Bastard\Framework\View;
 
 use League\Plates\Engine;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,13 +17,23 @@ class ViewExtensionMiddleware implements MiddlewareInterface
     protected Engine $engine;
     protected RouteParserInterface $routeParser;
 
+    /**
+     * @param Engine $engine
+     * @param RouteParserInterface $routeParser
+     */
     public function __construct(Engine $engine, RouteParserInterface $routeParser)
     {
         $this->engine = $engine;
         $this->routeParser = $routeParser;
     }
 
-    public static function createFromContainer(App $app)
+    /**
+     * @param App $app
+     * @return self
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public static function createFromContainer(App $app): ViewExtensionMiddleware
     {
         $engine = $app->getContainer()->get(Engine::class);
         $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -29,6 +41,11 @@ class ViewExtensionMiddleware implements MiddlewareInterface
         return new self($engine, $routeParser);
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->engine->loadExtension(new ViewExtension($this->routeParser, $request->getUri()));
