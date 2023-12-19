@@ -1,13 +1,13 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
+    "name": "dsmithhayes/bastard",
+    "description": "A fork of the Slim Framework Skeleton to include Views",
     "keywords": [
         "microframework",
         "rest",
         "router",
         "psr7"
     ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "homepage": "http://github.com/dsmithhayes/bastard",
     "license": "MIT",
     "authors": [
         {
@@ -19,11 +19,17 @@
             "name": "Pierre Berube",
             "email": "pierre@lgse.com",
             "homepage": "http://www.lgse.com/"
+        },
+        {
+            "name": "Dave Smith-Hayes",
+            "email": "me@davesmithhayes.com",
+            "homepage": "https://davesmithhayes.com/"
         }
     ],
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
+        "league/plates": "^3.5",
         "monolog/monolog": "^2.9",
         "php-di/php-di": "^6.4",
         "slim/psr7": "^1.6",
@@ -46,7 +52,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Bastard\\": "src/"
         }
     },
     "autoload-dev": {
