@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Bastard\Framework\Settings\SettingsInterface;
 use DI\ContainerBuilder;
 use League\Plates\Engine;
+use League\Plates\Template\Theme;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -29,9 +30,10 @@ return function (ContainerBuilder $containerBuilder) {
         },
         Engine::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class)->get('view');
-            $engine = new Engine($settings['template_paths']['default']);
-
-            // Add more template paths here
+            $engine = Engine::fromTheme(Theme::hierarchy([
+                Theme::new($settings['template_paths']['default']),
+                // Add more themes here
+            ]));
 
             return $engine;
         }

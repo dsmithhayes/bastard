@@ -1,5 +1,3 @@
-<?php $this->layout('template'); ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
