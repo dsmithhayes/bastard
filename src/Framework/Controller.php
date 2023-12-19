@@ -41,7 +41,7 @@ abstract class Controller
     public function render(string $template, array $data = []): Response
     {
         $this->response->getBody()->write($this->view->render($template, $data));
-        return $this->response;
+        return $this->response->withHeader('Content-Type', 'text/html');
     }
 
     public function redirect(string $routeName, int $status = 301): Response
