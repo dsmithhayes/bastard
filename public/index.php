@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
 use App\Application\Settings\SettingsInterface;
+use Bastard\Framework\Handlers\HttpErrorHandler;
+use Bastard\Framework\Handlers\ShutdownHandler;
 use Bastard\Framework\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;

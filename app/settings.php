@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Application\Settings\Settings;
-use App\Application\Settings\SettingsInterface;
+use Bastard\Framework\Settings\Settings;
+use Bastard\Framework\Settings\SettingsInterface;
 use DI\ContainerBuilder;
 use Monolog\Logger;
 
@@ -21,6 +21,10 @@ return function (ContainerBuilder $containerBuilder) {
                     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
+                // The View Layer Settings
+                'view' => [
+                    'default_path' => __DIR__ . '/../templates/main'
+                ]
             ]);
         }
     ]);

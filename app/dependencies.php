@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Application\Settings\SettingsInterface;
+use Bastard\Framework\Settings\SettingsInterface;
 use DI\ContainerBuilder;
+use League\Plates\Engine;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -26,5 +27,8 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        Engine::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class)->get('view');
+        }
     ]);
 };
