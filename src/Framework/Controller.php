@@ -38,6 +38,12 @@ abstract class Controller
 
     abstract public function action(): Response;
 
+    /**
+     * Render the Template given and send back the Reponse object.
+     * @param string $template
+     * @param array $data
+     * @return Response
+     */
     public function render(string $template, array $data = []): Response
     {
         $this->response->getBody()->write($this->view->render($template, $data));
