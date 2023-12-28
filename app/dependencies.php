@@ -30,6 +30,7 @@ return function (ContainerBuilder $containerBuilder) {
         },
         Engine::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class)->get('view');
+
             $engine = Engine::fromTheme(Theme::hierarchy([
                 Theme::new($settings['template_paths']['default'], 'Main'),
                 // Add more themes here
