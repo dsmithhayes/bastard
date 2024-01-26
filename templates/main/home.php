@@ -2,5 +2,5 @@
 
 <div>
     <h1>Hello!</h1>
-    <p>Welcome to the Bastard Framework.</p>
+    <p><?= $this->e($message); ?></p>
 </div>

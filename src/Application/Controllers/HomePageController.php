@@ -11,6 +11,7 @@ class HomePageController extends Controller
     {
         return $this->render('home', [
             'title' => 'Home',
+            'message' => 'Welcome to the Bastard Framework',
         ]);
     }
 }
