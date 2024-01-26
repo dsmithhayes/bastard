@@ -8,6 +8,8 @@ use DI\ContainerBuilder;
 use Monolog\Logger;
 
 return function (ContainerBuilder $containerBuilder) {
+    /** @TODO Implement the Dotenv library and load environment specific configuration settings */
+
     // Global Settings Object
     $containerBuilder->addDefinitions([
         SettingsInterface::class => function () {
