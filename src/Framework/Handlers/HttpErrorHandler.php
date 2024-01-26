@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bastard\Framework\Handlers;
 
-use App\Application\Actions\ActionError;
-use App\Application\Actions\ActionPayload;
+use Bastard\Application\Actions\ActionError;
+use Bastard\Application\Actions\ActionPayload;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpException;

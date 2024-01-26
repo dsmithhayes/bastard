@@ -36,10 +36,14 @@ abstract class Controller
         return $this->action();
     }
 
+    /**
+     * Each Controller that inherits from this base-class will need to implement some form of Action.
+     * @return Response
+     */
     abstract public function action(): Response;
 
     /**
-     * Render the Template given and send back the Reponse object.
+     * Render the Template given and send back the Response object.
      * @param string $template
      * @param array $data
      * @return Response
@@ -50,12 +54,22 @@ abstract class Controller
         return $this->response->withHeader('Content-Type', 'text/html');
     }
 
+    /**
+     * @param string $routeName
+     * @param int $status
+     * @return Response
+     */
     public function redirect(string $routeName, int $status = 301): Response
     {
         $route = $this->route->getRouteParser()->urlFor($routeName);
         return $this->response->withHeader('Location', $route)->withStatus($status);
     }
 
+    /**
+     * @param array $data
+     * @param string $contentType
+     * @return Response
+     */
     public function respondWithData(array $data, string $contentType = 'application/json'): Response
     {
         $response = $this->response->withHeader('Content-Type', $contentType);
