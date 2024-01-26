@@ -1,6 +1,7 @@
 {
     "name": "dsmithhayes/bastard",
     "description": "A fork of the Slim Framework Skeleton to include Views",
+    "version": "0.0.1"
     "keywords": [
         "microframework",
         "rest",
