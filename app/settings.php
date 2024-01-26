@@ -30,7 +30,13 @@ return function (ContainerBuilder $containerBuilder) {
                     'asset_paths' => [
                         'default' => __DIR__ . '/../assets'
                     ],
-                ]
+                ],
+                // Determines details about the Website
+                'siteDetails' => [
+                    'title' => 'The Bastard Framework',
+                    'description' => 'A small Framework made from Slim and Plates.',
+                    'tags' => implode(',', ['framework', 'php', 'slimphp', 'plates']),
+                ],
             ]);
         }
     ]);

@@ -36,6 +36,14 @@ return function (ContainerBuilder $containerBuilder) {
                 // Add more themes here
             ]));
 
+            // Add the global data into the Engine
+            $siteDetails = $c->get(SettingsInterface::class)->get('siteDetails');
+            $engine->addData([
+                'title' => $siteDetails['title'],
+                'tags' => $siteDetails['tags'],
+                'description' => $siteDetails['description'],
+            ]);
+
             return $engine;
         }
     ]);
