@@ -28,7 +28,7 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
-        'view-engine' => function (ContainerInterface $c) {
+        Engine::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class)->get('view');
 
             $engine = Engine::fromTheme(Theme::hierarchy([

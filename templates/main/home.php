@@ -1,4 +1,4 @@
-<?php $this->layout('template', [ 'title' => "Home" ]); ?>
+<?php $this->layout('template', [ 'title' => $title ]); ?>
 
 <div>
     <h1>Hello!</h1>

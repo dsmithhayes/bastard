@@ -9,6 +9,8 @@ class HomePageController extends Controller
 {
     public function action(): Response
     {
-        return $this->render('home');
+        return $this->render('home', [
+            'title' => 'Home',
+        ]);
     }
 }

@@ -35,7 +35,7 @@ class ViewExtensionMiddleware implements MiddlewareInterface
      */
     public static function createFromContainer(App $app): ViewExtensionMiddleware
     {
-        $engine = $app->getContainer()->get('view-engine');
+        $engine = $app->getContainer()->get(Engine::class);
         $routeParser = $app->getRouteCollector()->getRouteParser();
 
         return new self($engine, $routeParser);
